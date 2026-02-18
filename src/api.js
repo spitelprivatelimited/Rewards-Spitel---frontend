@@ -1,20 +1,40 @@
 import axios from "axios";
+import { envConfig } from "./config/env";
 
-const rawBackendUrl = import.meta.env.VITE_BACKEND_URL?.trim();
-const normalizedBackendUrl = rawBackendUrl
-  ? rawBackendUrl.replace(/\/+$/, "")
-  : "";
+// Normalize URL: remove trailing slashes and ensure /api suffix
+const normalizeUrl = (url) => {
+  const trimmed = url.trim();
+  const withoutTrailing = trimmed.replace(/\/+$/, "");
+  return withoutTrailing.endsWith("/api")
+    ? withoutTrailing
+    : `${withoutTrailing}/api`;
+};
 
-const baseURL = normalizedBackendUrl
-  ? normalizedBackendUrl.endsWith("/api")
-    ? normalizedBackendUrl
-    : `${normalizedBackendUrl}/api`
-  : "/api";
+// Get API base URL based on environment
+const getBaseUrl = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  if (backendUrl) {
+    return normalizeUrl(backendUrl);
+  }
+
+  // Fallback for development without env var
+  return "/api";
+};
+
+const baseURL = getBaseUrl();
 
 const api = axios.create({
   baseURL,
   headers: { "Content-Type": "application/json" },
 });
+
+// Log API endpoint in development
+if (envConfig.isDev) {
+  console.log(
+    `[API Config] Environment: ${envConfig.env}, Base URL: ${baseURL}`,
+  );
+}
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
