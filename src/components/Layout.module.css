@@ -1,0 +1,128 @@
+.layout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .layout {
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: auto 1fr;
+  }
+}
+
+.header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.menuBtn {
+  display: block;
+  padding: 0.5rem;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+}
+
+@media (min-width: 768px) {
+  .menuBtn {
+    display: none;
+  }
+}
+
+.logo {
+  flex: 1;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.userName {
+  font-weight: 500;
+}
+
+.userRole {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.logoutBtn {
+  padding: 0.4rem 0.75rem;
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.logoutBtn:hover {
+  background: var(--border);
+}
+
+.nav {
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+}
+
+.navOpen {
+  display: flex;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+  }
+  .navOpen {
+    display: flex;
+  }
+}
+
+.nav a {
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  color: var(--text-muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav a:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.nav a.active {
+  background: rgba(232, 184, 109, 0.15);
+  color: var(--accent);
+}
+
+.main {
+  padding: 1.5rem;
+  overflow: auto;
+}
+
+.app-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
