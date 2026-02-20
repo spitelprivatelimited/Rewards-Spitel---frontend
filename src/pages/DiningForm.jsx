@@ -20,9 +20,11 @@ export default function DiningForm() {
   const [form, setForm] = useState({
     customerName: '',
     phone: '',
+    invoiceNumber: '',
     billAmount: '',
     dateTime: toDateTimeLocal(new Date()),
   });
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(null);
@@ -41,11 +43,20 @@ export default function DiningForm() {
     e.preventDefault();
     setError('');
     setSuccess(null);
+    if (form.phone.length !== 10) {
+      setError('Phone number must be exactly 10 digits');
+      return;
+    }
+    if (!form.billAmount) {
+      setError('Bill amount is required');
+      return;
+    }
     setLoading(true);
     try {
       const payload = {
         customerName: form.customerName.trim(),
         phone: form.phone.trim(),
+        invoiceNumber: form.invoiceNumber.trim(),
         billAmount: Number(form.billAmount),
         dateTime: form.dateTime ? new Date(form.dateTime).toISOString() : undefined,
       };
@@ -55,9 +66,11 @@ export default function DiningForm() {
       setForm({
         customerName: '',
         phone: '',
+        invoiceNumber: '',
         billAmount: '',
         dateTime: toDateTimeLocal(new Date()),
       });
+      setErrors({});
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to submit');
     } finally {
@@ -74,8 +87,25 @@ export default function DiningForm() {
         {error && <div className={styles.error}>{error}</div>}
         {success && (
           <div className={styles.success}>
-            Coupon created: <strong>{success.coupon?.couponCode}</strong> (₹{success.coupon?.couponValue})
-            {success.whatsappSent && ' · WhatsApp sent.'}
+            {success.coupons ? (
+              <>
+                <div><strong>Coupons Created:</strong></div>
+                {success.coupons.map((coupon, idx) => (
+                  <div key={idx}>
+                    {idx + 1}. <strong>{coupon.couponCode}</strong> - ₹{coupon.couponValue}
+                  </div>
+                ))}
+                <div style={{marginTop: '8px'}}>
+                  Total Coupon Value: <strong>₹{success.totalCouponValue}</strong>
+                </div>
+                {success.whatsappSent && <div style={{marginTop: '4px'}}>✓ WhatsApp sent</div>}
+              </>
+            ) : (
+              <>
+                Coupon created: <strong>{success.coupon?.couponCode}</strong> (₹{success.coupon?.couponValue})
+                {success.whatsappSent && ' · WhatsApp sent.'}
+              </>
+            )}
           </div>
         )}
 
@@ -111,11 +141,33 @@ export default function DiningForm() {
           <label>Phone number *</label>
           <input
             type="tel"
+            maxLength="10"
+            pattern="\d{10}"
             className={styles.input}
             value={form.phone}
-            onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+            onChange={(e) => {
+              const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+              setForm((f) => ({ ...f, phone: val }));
+              if (val.length < 10 && val.length > 0) {
+                setErrors((err) => ({ ...err, phone: 'Number is less than 10' }));
+              } else {
+                setErrors((err) => ({ ...err, phone: '' }));
+              }
+            }}
             placeholder="e.g. 9876543210"
             required
+          />
+          {errors.phone && <div className={styles.fieldError}>{errors.phone}</div>}
+        </div>
+
+        <div className={styles.field}>
+          <label>Invoice/Bill Number</label>
+          <input
+            type="text"
+            className={styles.input}
+            value={form.invoiceNumber}
+            onChange={(e) => setForm((f) => ({ ...f, invoiceNumber: e.target.value }))}
+            placeholder="e.g. INV-2024-001"
           />
         </div>
 
@@ -131,6 +183,16 @@ export default function DiningForm() {
             placeholder="e.g. 1200"
             required
           />
+          {form.billAmount && (
+            <div className={styles.billAmountDisplay}>
+              Amount: <strong>₹{Number(form.billAmount).toFixed(2)}</strong>
+            </div>
+          )}
+          {form.billAmount > 2000 && (
+            <div className={styles.warning}>
+              ⚠️ High amount! Please verify: ₹{Number(form.billAmount).toFixed(2)}
+            </div>
+          )}
         </div>
 
         <div className={styles.field}>

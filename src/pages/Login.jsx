@@ -59,9 +59,6 @@ export default function Login() {
             {loading ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
-        <p className={styles.hint}>
-          Demo: admin@aaharam.com / admin123 (run backend seed first)
-        </p>
       </div>
     </div>
   );

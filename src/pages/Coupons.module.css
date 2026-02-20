@@ -76,3 +76,153 @@
 .muted {
   color: var(--text-muted);
 }
+
+.invoiceHeader {
+  background: rgba(99, 102, 241, 0.15);
+  border-top: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+.invoiceHeader td {
+  padding: 0.75rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.groupedRow {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.groupedRow:hover {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.paginationInfo {
+  margin: 1rem 0 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.paginationInfo2 {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+  flex: 1;
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 8px;
+  gap: 1rem;
+}
+
+.paginationControls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.paginationBtn {
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 32px;
+  text-align: center;
+}
+
+.paginationBtn:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.paginationBtn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
+.paginationBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ellipsis {
+  color: var(--text-muted);
+  padding: 0.5rem 0.25rem;
+  font-weight: 500;
+}
+
+.pageSizeSelect {
+  padding: 0.5rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pageInfo {
+  color: var(--text);
+  font-weight: 500;
+  min-width: 120px;
+  text-align: center;
+}
+
+.summarySection {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.summaryLabel {
+  font-weight: 600;
+  color: #555;
+  font-size: 14px;
+}
+
+.summaryValue {
+  font-weight: 700;
+  color: #2c5364;
+  font-size: 16px;
+  background-color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.footerLabel {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0.75rem !important;
+}
+
+.footerValue {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent);
+  font-weight: 600;
+  padding: 0.75rem !important;
+}
