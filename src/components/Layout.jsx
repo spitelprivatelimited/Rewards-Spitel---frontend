@@ -36,32 +36,47 @@ export default function Layout() {
       </header>
 
       <nav className={`${styles.nav} ${menuOpen ? styles.navOpen : ''}`}>
-        <NavLink to="/" end onClick={() => setMenuOpen(false)}>
-          Dashboard
-        </NavLink>
-        <NavLink to="/campaigns" onClick={() => setMenuOpen(false)}>
-          Campaigns
-        </NavLink>
-        {(isAdmin || isClient) && (
-          <NavLink to="/coupons" onClick={() => setMenuOpen(false)}>
-            Coupons
+        {isCashier ? (
+          // Cashier only sees Dining Form
+          <NavLink to="/dining" onClick={() => setMenuOpen(false)}>
+            Dining form
           </NavLink>
-        )}
-        <NavLink to="/dining" onClick={() => setMenuOpen(false)}>
-          Dining form
-        </NavLink>
-        <NavLink to="/redeem" onClick={() => setMenuOpen(false)}>
-          Redeem
-        </NavLink>
-        {(isAdmin || isClient) && (
-          <NavLink to="/redemptions" onClick={() => setMenuOpen(false)}>
-            Redemptions
-          </NavLink>
-        )}
-        {isAdmin && (
-          <NavLink to="/clients" onClick={() => setMenuOpen(false)}>
-            Clients
-          </NavLink>
+        ) : (
+          // Admin and Client see all relevant menu items
+          <>
+            <NavLink to="/" end onClick={() => setMenuOpen(false)}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/campaigns" onClick={() => setMenuOpen(false)}>
+              Campaigns
+            </NavLink>
+            {(isAdmin || isClient) && (
+              <NavLink to="/coupons" onClick={() => setMenuOpen(false)}>
+                Coupons
+              </NavLink>
+            )}
+            <NavLink to="/dining" onClick={() => setMenuOpen(false)}>
+              Dining form
+            </NavLink>
+            <NavLink to="/redeem" onClick={() => setMenuOpen(false)}>
+              Redeem
+            </NavLink>
+            {(isAdmin || isClient) && (
+              <NavLink to="/redemptions" onClick={() => setMenuOpen(false)}>
+                Redemptions
+              </NavLink>
+            )}
+            {isAdmin && (
+              <NavLink to="/clients" onClick={() => setMenuOpen(false)}>
+                Clients
+              </NavLink>
+            )}
+            {(isAdmin || isClient) && (
+              <NavLink to="/users" onClick={() => setMenuOpen(false)}>
+                Users
+              </NavLink>
+            )}
+          </>
         )}
       </nav>
 

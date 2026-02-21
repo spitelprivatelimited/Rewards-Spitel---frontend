@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Campaigns from './pages/Campaigns';
 import CampaignForm from './pages/CampaignForm';
 import Clients from './pages/Clients';
+import Users from './pages/Users';
 import Redemption from './pages/Redemption';
 import Redemptions from './pages/Redemptions';
 import Coupons from './pages/Coupons';
@@ -18,6 +19,14 @@ function PrivateRoute({ children, roles }) {
   if (!user) return <Navigate to="/login" replace />;
   if (roles && !roles.includes(user.role)) return <Navigate to="/" replace />;
   return children;
+}
+
+function DashboardOrDining() {
+  const { user } = useAuth();
+  if (user?.role === 'CASHIER') {
+    return <Navigate to="/dining" replace />;
+  }
+  return <Dashboard />;
 }
 
 function AppRoutes() {
@@ -32,13 +41,14 @@ function AppRoutes() {
           </PrivateRoute>
         }
       >
-        <Route index element={<Dashboard />} />
-        <Route path="campaigns" element={<Campaigns />} />
+        <Route index element={<DashboardOrDining />} />
+        <Route path="campaigns" element={<PrivateRoute roles={['ADMIN', 'CLIENT']}><Campaigns /></PrivateRoute>} />
         <Route path="campaigns/new" element={<PrivateRoute roles={['ADMIN', 'CLIENT']}><CampaignForm /></PrivateRoute>} />
         <Route path="campaigns/:id/edit" element={<PrivateRoute roles={['ADMIN', 'CLIENT']}><CampaignForm /></PrivateRoute>} />
         <Route path="clients" element={<PrivateRoute roles={['ADMIN']}><Clients /></PrivateRoute>} />
-        <Route path="redeem" element={<Redemption />} />
-        <Route path="redemptions" element={<Redemptions />} />
+        <Route path="users" element={<PrivateRoute roles={['ADMIN', 'CLIENT']}><Users /></PrivateRoute>} />
+        <Route path="redeem" element={<PrivateRoute roles={['ADMIN', 'CLIENT']}><Redemption /></PrivateRoute>} />
+        <Route path="redemptions" element={<PrivateRoute roles={['ADMIN', 'CLIENT']}><Redemptions /></PrivateRoute>} />
         <Route path="coupons" element={<PrivateRoute roles={['ADMIN', 'CLIENT']}><Coupons /></PrivateRoute>} />
         <Route path="dining" element={<PrivateRoute roles={['ADMIN', 'CLIENT', 'CASHIER']}><DiningForm /></PrivateRoute>} />
       </Route>

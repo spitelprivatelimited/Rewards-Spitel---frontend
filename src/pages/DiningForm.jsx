@@ -28,6 +28,7 @@ export default function DiningForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(null);
+  const [exportLoading, setExportLoading] = useState(false);
 
   const isAdmin = user?.role === 'ADMIN';
 
@@ -78,10 +79,50 @@ export default function DiningForm() {
     }
   };
 
+  const handleExportCSV = async () => {
+    setExportLoading(true);
+    try {
+      const params = {};
+      if (isAdmin && clientId) {
+        params.clientId = clientId;
+      }
+
+      const response = await diningApi.exportCSV(params);
+      
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      const timestamp = new Date().toISOString().split('T')[0];
+      link.setAttribute('download', `dining-entries-export-${timestamp}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Failed to export CSV: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setExportLoading(false);
+    }
+  };
+
   return (
     <div className={styles.page}>
-      <h1 className={styles.title}>Customer Dining </h1>
-      <p className={styles.subtitle}>Enter customer details to create a coupon. WhatsApp is sent automatically </p>
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>Customer Dining </h1>
+          <p className={styles.subtitle}>Enter customer details to create a coupon. WhatsApp is sent automatically </p>
+        </div>
+        {(isAdmin) && (
+          <button 
+            type="button" 
+            onClick={handleExportCSV} 
+            className={styles.exportBtn}
+            disabled={exportLoading}
+          >
+            {exportLoading ? 'Exporting...' : 'Export CSV'}
+          </button>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {error && <div className={styles.error}>{error}</div>}
@@ -161,13 +202,14 @@ export default function DiningForm() {
         </div>
 
         <div className={styles.field}>
-          <label>Invoice/Bill Number</label>
+          <label>Invoice/Bill Number *</label>
           <input
             type="text"
             className={styles.input}
             value={form.invoiceNumber}
             onChange={(e) => setForm((f) => ({ ...f, invoiceNumber: e.target.value }))}
             placeholder="e.g. INV-2024-001"
+            required
           />
         </div>
 
@@ -175,7 +217,7 @@ export default function DiningForm() {
           <label>Bill amount *</label>
           <input
             type="number"
-            min="0"
+            min="500"
             step="0.01"
             className={styles.input}
             value={form.billAmount}

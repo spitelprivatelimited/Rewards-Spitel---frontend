@@ -184,27 +184,22 @@ export default function Coupons() {
                   const rows = [];
 
                   Object.entries(groups).forEach(([invoiceNo, coupons]) => {
-                    // Add subheading row if multiple coupons
-                    if (coupons.length > 1) {
-                      const billAmount = coupons[0].billAmount;
-                      rows.push(
-                        <tr key={`header-${invoiceNo}`} className={styles.invoiceHeader}>
-                          <td colSpan="8">
-                            <strong>Invoice: {coupons[0].invoiceNumber ?? invoiceNo}</strong> — {coupons.length} coupons
-                          </td>
-                          <td colSpan="3" style={{ textAlign: 'right' }}>
-                            <strong>Bill Amount: ₹{billAmount?.toLocaleString('en-IN') ?? '—'}</strong>
-                          </td>
-                        </tr>
-                      );
-                    }
+                    const billAmount = coupons[0].billAmount;
+                    rows.push(
+                      <tr key={`header-${invoiceNo}`} className={styles.invoiceHeader}>
+                        <td colSpan="8">
+                          <strong>Invoice: {coupons[0].invoiceNumber ?? invoiceNo}</strong> — {coupons.length} {coupons.length === 1 ? 'coupon' : 'coupons'}
+                        </td>
+                        <td colSpan="3" style={{ textAlign: 'right' }}>
+                          <strong>Bill Amount: ₹{billAmount?.toLocaleString('en-IN') ?? '—'}</strong>
+                        </td>
+                      </tr>
+                    );
 
-                    // Add coupon rows
                     coupons.forEach((c, index) => {
                       serialNo++;
-                      const showBillAmount = coupons.length === 1 ? (c.billAmount?.toLocaleString('en-IN') ?? '—') : '—';
                       rows.push(
-                        <tr key={c._id} className={coupons.length > 1 ? styles.groupedRow : ''}>
+                        <tr key={c._id} className={styles.groupedRow}>
                           <td>{serialNo}</td>
                           <td className={styles.mono}>{c.couponCode}</td>
                           <td>₹{c.couponValue?.toLocaleString('en-IN')}</td>

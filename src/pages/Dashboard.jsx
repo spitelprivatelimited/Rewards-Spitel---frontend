@@ -42,6 +42,15 @@ export default function Dashboard() {
     { label: 'Active campaigns', value: d.campaignsActive ?? 0 },
   ];
 
+  // Add admin-only metrics when viewing global stats
+  if (isAdmin && !clientId) {
+    cards.push(
+      { label: 'Total clients', value: d.totalClients ?? 0 },
+      { label: 'Total cashiers', value: d.totalCashiers ?? 0 },
+      { label: 'Total amount (₹)', value: (d.totalAmount ?? 0).toLocaleString('en-IN') }
+    );
+  }
+
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Dashboard</h1>

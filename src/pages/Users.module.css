@@ -1,0 +1,306 @@
+.page {
+  max-width: 1000px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.filterSelect {
+  padding: 0.6rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.9rem;
+  min-width: 150px;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.clearBtn {
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.clearBtn:hover {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.clientGroup {
+  margin-bottom: 2rem;
+}
+
+.clientGroupHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 0;
+}
+
+.clientGroupHeader h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.userCount {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.clientGroup .tableWrap {
+  border-radius: 0 0 8px 8px;
+  border: 1px solid var(--border);
+  border-top: none;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.createBtn {
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.createBtn:hover {
+  opacity: 0.9;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.clientGroup .tableWrap {
+  border-radius: 0 0 8px 8px;
+  border-top: none;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.mono {
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.role_CASHIER {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.role_CLIENT {
+  color: #8b5cf6;
+  font-weight: 500;
+}
+
+.role_ADMIN {
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.status_ACTIVE {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.status_INACTIVE {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.linkBtn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 0;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.linkBtn:hover {
+  text-decoration: underline;
+}
+
+.linkBtnDanger {
+  background: none;
+  border: none;
+  color: var(--error);
+  padding: 0;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.linkBtnDanger:hover {
+  text-decoration: underline;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal h2 {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+}
+
+.modal .field {
+  margin-bottom: 1rem;
+}
+
+.modal label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.modal .input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.modal .input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.modal .error {
+  padding: 0.5rem;
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--error);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btnPrimary {
+  padding: 0.6rem 1.25rem;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+}
+
+.btnPrimary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  padding: 0.6rem 1.25rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btnSecondary:hover {
+  background: var(--bg);
+}
+
+.muted {
+  color: var(--text-muted);
+}

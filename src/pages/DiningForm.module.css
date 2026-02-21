@@ -2,6 +2,36 @@
   max-width: 560px;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.exportBtn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+
+.exportBtn:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.exportBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .title {
   font-family: var(--font-display);
   font-size: 1.5rem;
@@ -11,7 +41,7 @@
 .subtitle {
   color: var(--text-muted);
   font-size: 0.9rem;
-  margin: 0 0 1.5rem;
+  margin: 0;
 }
 
 .form {

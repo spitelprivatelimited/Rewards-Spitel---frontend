@@ -60,6 +60,8 @@ export const auth = {
   login: (email, password) => api.post("/auth/login", { email, password }),
   register: (data) => api.post("/auth/register", data),
   me: () => api.get("/auth/me"),
+  changePassword: (currentPassword, newPassword) =>
+    api.patch("/auth/change-password", { currentPassword, newPassword }),
 };
 
 export const campaigns = {
@@ -85,6 +87,15 @@ export const clients = {
   update: (id, data) => api.patch(`/clients/${id}`, data),
 };
 
+export const users = {
+  list: (params) => api.get("/users", { params }),
+  create: (data) => api.post("/users", data),
+  updateStatus: (id, status) => api.patch(`/users/${id}/status`, { status }),
+  resetPassword: (id, newPassword) =>
+    api.patch(`/users/${id}/reset-password`, { newPassword }),
+  delete: (id) => api.delete(`/users/${id}`),
+};
+
 export const analytics = {
   dashboard: (clientId) =>
     api.get("/analytics/dashboard", { params: clientId ? { clientId } : {} }),
@@ -94,4 +105,6 @@ export const analytics = {
 
 export const dining = {
   submit: (data) => api.post("/dining", data),
+  exportCSV: (params) =>
+    api.get("/dining/export/csv", { params, responseType: "blob" }),
 };
