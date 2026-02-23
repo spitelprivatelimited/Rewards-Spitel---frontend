@@ -35,6 +35,15 @@ export default function Dashboard() {
   if (error) return <div className={styles.error}>{error}</div>;
 
   const d = data || {};
+  
+  // Today's metrics
+  const todayCards = [
+    { label: "Today's coupons", value: d.todayCouponsCount ?? 0 },
+    { label: "Today's coupon value (₹)", value: (d.todayTotalCouponValue ?? 0).toLocaleString('en-IN') },
+    { label: "Today's bill amount (₹)", value: (d.todayTotalBillAmount ?? 0).toLocaleString('en-IN') },
+  ];
+
+  // Overall metrics
   const cards = [
     { label: 'Coupons issued', value: d.couponsIssued ?? 0 },
     { label: 'Coupons redeemed', value: d.couponsRedeemed ?? 0 },
@@ -65,6 +74,18 @@ export default function Dashboard() {
           </select>
         </div>
       )}
+      
+      <h2 className={styles.subtitle}>Today's Activity</h2>
+      <div className={styles.grid}>
+        {todayCards.map((card) => (
+          <div key={card.label} className={styles.card}>
+            <span className={styles.cardLabel}>{card.label}</span>
+            <span className={styles.cardValue}>{card.value}</span>
+          </div>
+        ))}
+      </div>
+
+      <h2 className={styles.subtitle}>Overall Statistics</h2>
       <div className={styles.grid}>
         {cards.map((card) => (
           <div key={card.label} className={styles.card}>
