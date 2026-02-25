@@ -17,6 +17,9 @@ export default function Redemption() {
   const [redeemCoupon, setRedeemCoupon] = useState(null);
   const [invoiceNo, setInvoiceNo] = useState('');
   const [billAmount, setBillAmount] = useState('');
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false);
   const [redeeming, setRedeeming] = useState(false);
   const [redeemError, setRedeemError] = useState('');
   const [lastResult, setLastResult] = useState(null);
@@ -46,18 +49,53 @@ export default function Redemption() {
     setRedeemCoupon(coupon);
     setInvoiceNo('');
     setBillAmount('');
+    setOtp('');
+    setOtpSent(false);
     setRedeemError('');
     setLastResult(null);
   };
 
   const cancelRedeem = () => {
     setRedeemCoupon(null);
+    setOtp('');
+    setOtpSent(false);
     setRedeemError('');
+  };
+
+  const handleSendOtp = async () => {
+    if (!redeemCoupon) return;
+    setRedeemError('');
+    setSendingOtp(true);
+    try {
+      await couponsApi.sendOtp({
+        couponId: redeemCoupon._id,
+        clientId: user?.role === 'ADMIN' ? redeemCoupon.clientId : undefined,
+      });
+      setOtpSent(true);
+      setRedeemError('');
+    } catch (err) {
+      setRedeemError(err.response?.data?.error || 'Failed to send OTP');
+    } finally {
+      setSendingOtp(false);
+    }
   };
 
   const handleRedeem = async (e) => {
     e.preventDefault();
     if (!redeemCoupon) return;
+    
+    // If OTP not sent yet, send it first
+    if (!otpSent) {
+      await handleSendOtp();
+      return;
+    }
+    
+    // OTP is sent, now verify and redeem
+    if (!otp.trim()) {
+      setRedeemError('Please enter OTP');
+      return;
+    }
+    
     setRedeemError('');
     setRedeeming(true);
     setLastResult(null);
@@ -66,6 +104,7 @@ export default function Redemption() {
         couponId: redeemCoupon._id,
         invoiceNo: invoiceNo.trim(),
         billAmount: Number(billAmount),
+        otp: otp.trim(),
         clientId: user?.role === 'ADMIN' ? redeemCoupon.clientId : undefined,
       });
       setLastResult(res.data.redemption);
@@ -73,6 +112,8 @@ export default function Redemption() {
       setRedeemCoupon(null);
       setInvoiceNo('');
       setBillAmount('');
+      setOtp('');
+      setOtpSent(false);
     } catch (err) {
       setRedeemError(err.response?.data?.error || 'Redemption failed');
     } finally {
@@ -148,14 +189,66 @@ export default function Redemption() {
               />
             </div>
             <div className={styles.actions}>
-              <button type="submit" disabled={redeeming} className={styles.btnPrimary}>
-                {redeeming ? 'Redeeming…' : 'Confirm redeem'}
+              <button type="submit" disabled={redeeming || sendingOtp || otpSent} className={styles.btnPrimary}>
+                {sendingOtp ? 'Sending OTP…' : 'Send OTP'}
               </button>
               <button type="button" onClick={cancelRedeem} className={styles.btnSecondary}>
                 Cancel
               </button>
             </div>
           </form>
+        </div>
+      )}
+
+      {/* OTP Modal */}
+      {otpSent && redeemCoupon && (
+        <div className={styles.modalOverlay} onClick={() => { setOtpSent(false); setOtp(''); }}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3>Enter OTP</h3>
+              <button className={styles.closeBtn} onClick={() => { setOtpSent(false); setOtp(''); }}>×</button>
+            </div>
+            <div className={styles.modalBody}>
+              <p className={styles.otpInfo}>
+                OTP sent to <strong>{redeemCoupon.customerMobile}</strong>
+              </p>
+              {redeemError && <div className={styles.error}>{redeemError}</div>}
+              <div className={styles.otpInputWrapper}>
+                <input
+                  type="text"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
+                  placeholder="6-digit OTP"
+                  maxLength={6}
+                  autoFocus
+                  className={styles.otpInput}
+                />
+              </div>
+              <button
+                type="button"
+                onClick={handleSendOtp}
+                disabled={sendingOtp}
+                className={styles.resendLink}
+              >
+                {sendingOtp ? 'Sending…' : 'Resend OTP'}
+              </button>
+            </div>
+            <div className={styles.modalFooter}>
+              <button
+                onClick={handleRedeem}
+                disabled={redeeming || !otp || otp.length !== 6}
+                className={styles.btnPrimary}
+              >
+                {redeeming ? 'Verifying…' : 'Verify & Redeem'}
+              </button>
+              <button
+                onClick={() => { setOtpSent(false); setOtp(''); }}
+                className={styles.btnSecondary}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

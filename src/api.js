@@ -77,6 +77,7 @@ export const coupons = {
       params: clientId ? { clientId } : {},
     }),
   list: (params) => api.get("/coupons", { params }),
+  sendOtp: (data) => api.post("/coupons/send-otp", data),
   redeem: (data) => api.post("/coupons/redeem", data),
 };
 
