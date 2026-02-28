@@ -1,5 +1,5 @@
 .page {
-  max-width: 520px;
+  max-width: 1200px;
 }
 
 .title {
@@ -63,8 +63,22 @@
   margin-bottom: 1rem;
 }
 
-.couponList {
+.mainContent {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 1.5rem;
   margin-top: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 968px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+  }
+}
+
+.couponList {
+  min-width: 0;
 }
 
 .couponList h2 {
@@ -118,11 +132,12 @@
 }
 
 .redeemPanel {
-  margin-top: 1.5rem;
   padding: 1.25rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  position: sticky;
+  top: 1rem;
 }
 
 .redeemPanel h3 {

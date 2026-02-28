@@ -142,27 +142,27 @@ export default function Redemption() {
       {error && <div className={styles.error}>{error}</div>}
 
       {coupons.length > 0 && (
-        <div className={styles.couponList}>
-          <h2>Active coupons</h2>
-          {coupons.map((c) => (
-            <div key={c._id} className={styles.couponCard}>
-              <div className={styles.couponRow}>
-                <span className={styles.code}>{c.couponCode}</span>
-                <span className={styles.value}>₹{c.couponValue}</span>
+        <div className={styles.mainContent}>
+          <div className={styles.couponList}>
+            <h2>Active coupons</h2>
+            {coupons.map((c) => (
+              <div key={c._id} className={styles.couponCard}>
+                <div className={styles.couponRow}>
+                  <span className={styles.code}>{c.couponCode}</span>
+                  <span className={styles.value}>₹{c.couponValue}</span>
+                </div>
+                <div className={styles.couponMeta}>
+                  {c.campaignId?.campaignName && <span>{c.campaignId.campaignName}</span>}
+                  <span>Valid till {formatDate(c.expiresAt)}</span>
+                </div>
+                <button type="button" onClick={() => startRedeem(c)} className={styles.redeemBtn}>
+                  Redeem
+                </button>
               </div>
-              <div className={styles.couponMeta}>
-                {c.campaignId?.campaignName && <span>{c.campaignId.campaignName}</span>}
-                <span>Valid till {formatDate(c.expiresAt)}</span>
-              </div>
-              <button type="button" onClick={() => startRedeem(c)} className={styles.redeemBtn}>
-                Redeem
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
 
-      {redeemCoupon && (
+          {redeemCoupon && (
         <div className={styles.redeemPanel}>
           <h3>Redeem: {redeemCoupon.couponCode} (₹{redeemCoupon.couponValue})</h3>
           <form onSubmit={handleRedeem}>
@@ -197,6 +197,8 @@ export default function Redemption() {
               </button>
             </div>
           </form>
+        </div>
+          )}
         </div>
       )}
 
